@@ -1,10 +1,16 @@
-import { app, BrowserWindow, screen } from 'electron';
+import { app, BrowserWindow, screen, ipcMain } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
+import { ExpressServer, TipSocketMessage } from './express/main';
 
 let win, serve;
+
+let expressServer = new ExpressServer();
+
 const args = process.argv.slice(1);
 serve = args.some(val => val === '--serve');
+
+//app.disableHardwareAcceleration();
 
 function createWindow() {
 
@@ -49,7 +55,9 @@ try {
   // This method will be called when Electron has finished
   // initialization and is ready to create browser windows.
   // Some APIs can only be used after this event occurs.
-  app.on('ready', createWindow);
+  app.on('ready', () => {
+    createWindow();
+  });
 
   // Quit when all windows are closed.
   app.on('window-all-closed', () => {
@@ -72,3 +80,10 @@ try {
   // Catch Error
   // throw e;
 }
+
+ipcMain.on('btn-clicked', (event) => {
+  let msg = new TipSocketMessage();
+  msg.Data = { Amount: 12, Username: "username_dumbo" };
+
+  expressServer.send(msg);
+});
