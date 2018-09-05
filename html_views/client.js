@@ -33,10 +33,8 @@ wsClient.onmessage = function (event) {
     const div = document.createElement("div");
     div.innerText = "Clicked <3 :D";
     $(div).animateCss('fadeInUpBig', () => {
-        $(div).animateCss('flash', () => {
-            $(div).animateCss('fadeOutUp', () => {
-                $(div).remove();
-            });
+        $(div).animateCss('fadeOutUp', () => {
+            $(div).remove();
         });
     });
     document.body.appendChild(div);
