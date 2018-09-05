@@ -23,6 +23,10 @@ $.fn.extend({
 
         return this;
     },
+    random: function () {
+        var randomIndex = Math.floor(Math.random() * this.length);
+        return $(this[randomIndex])
+    }
 });
 
 const wsServerPort = 5567;
@@ -32,10 +36,12 @@ var wsClient = new WebSocket("ws://localhost:" + wsServerPort);
 wsClient.onmessage = function (event) {
     const div = document.createElement("div");
     div.innerText = "Clicked <3 :D";
+    div.classList.add("tip-alert");
     $(div).animateCss('fadeInUpBig', () => {
-        $(div).animateCss('fadeOutUp', () => {
+        $(div).animateCss('fadeOut', () => {
             $(div).remove();
         });
     });
-    document.body.appendChild(div);
+    $('.tip-col').random().append(div);
+    //document.body.appendChild(div);
 }
